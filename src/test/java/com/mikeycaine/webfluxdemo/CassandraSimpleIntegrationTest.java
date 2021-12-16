@@ -87,8 +87,7 @@ class CassandraSimpleIntegrationTest {
 
             bookRepository.insert(Arrays.asList(javaBook, dPatternBook)).blockLast();
 
-            Mono<Long> bookCount = bookRepository.count();
-            bookCount.subscribe(count -> log.info("Book count = " + count));
+            bookRepository.count().doOnNext(count -> log.info("Book count = " + count)).block();
         }
 
         @Test
