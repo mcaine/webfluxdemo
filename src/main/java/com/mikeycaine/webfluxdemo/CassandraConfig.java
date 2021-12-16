@@ -5,9 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
-import reactor.util.annotation.NonNullApi;
-
-import javax.validation.constraints.NotNull;
 
 @Configuration
 @EnableReactiveCassandraRepositories
