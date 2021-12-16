@@ -3,11 +3,11 @@ package com.mikeycaine.webfluxdemo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class WebfluxdemoApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
+//
+//	@Test
+//	void contextLoads() {
+//	}
 
 }

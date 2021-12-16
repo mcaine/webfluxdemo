@@ -1,6 +1,7 @@
 package com.mikeycaine.webfluxdemo.model;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Table
+@ToString
 public class Book {
 
     public Book (UUID id, String title, String publisher, String isbn) {
