@@ -22,11 +22,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-//    @PrimaryKeyColumn(
-//        name = "id",
-//        type = PrimaryKeyType.PARTITIONED,
-//        ordering = Ordering.DESCENDING
-//    )
+    @PrimaryKeyColumn(
+        name = "id",
+        type = PrimaryKeyType.PARTITIONED,
+        ordering = Ordering.DESCENDING
+    )
     @Id
     @Getter
     private UUID id;
