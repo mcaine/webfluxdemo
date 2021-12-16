@@ -5,6 +5,7 @@ import com.datastax.driver.core.Session;
 import com.mikeycaine.webfluxdemo.model.Book;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -34,21 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@AutoConfigureMockMvc
 @AutoConfigureWebTestClient
 @Slf4j
 class CassandraSimpleIntegrationTest {
 
-//    @LocalServerPort
-//    private int port;
-
-
-
-    private static final String KEYSPACE_NAME = "books";
-
-
-    //@Autowired
-    //private MockMvc mockMvc;
+    private static final String KEYSPACE_NAME = "test";
+    private static final String CASSANDRA_VERSION = "4.0.1";
+    private static final int CASSANDRA_PORT = 9042;
 
     @Autowired
     WebTestClient webTestClient;
@@ -56,17 +49,17 @@ class CassandraSimpleIntegrationTest {
     @Autowired
     BookRepository bookRepository;
 
-
     @Container
-    private static final CassandraContainer cassandra = (CassandraContainer) new CassandraContainer("cassandra:4.0.1")
-            .withExposedPorts(9042);
+    private static final CassandraContainer cassandra =
+            (CassandraContainer) new CassandraContainer("cassandra:" + CASSANDRA_VERSION)
+            .withExposedPorts(CASSANDRA_PORT);
 
     @BeforeAll
     static void setupCassandraConnectionProperties() {
-        System.setProperty("cassandra.keyspace-name", KEYSPACE_NAME);
         System.setProperty("cassandra.contact-points", cassandra.getContainerIpAddress());
-        System.setProperty("cassandra.port", String.valueOf(cassandra.getMappedPort(9042)));
-//
+        System.setProperty("cassandra.port", String.valueOf(cassandra.getMappedPort(CASSANDRA_PORT)));
+        System.setProperty("cassandra.keyspace", KEYSPACE_NAME);
+
         createKeyspace(cassandra.getCluster());
     }
 
@@ -77,43 +70,42 @@ class CassandraSimpleIntegrationTest {
         }
     }
 
-    @Test
-    void givenCassandraContainer_whenSpringContextIsBootstrapped_thenContainerIsRunningWithNoExceptions() {
-        assertThat(cassandra.isRunning()).isTrue();
+    @Nested
+    class ApplicationContextIntegrationTest {
+        @Test
+        void testContainer_isRunning() {
+            assertThat(cassandra.isRunning()).isTrue();
+        }
     }
 
-    void insertBooks() {
-        Book javaBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-111111111111"), "Head First Java", "O'Reilly Media", "9780596009205");
-        Book dPatternBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-222222222222"), "Head First Design Patterns", "O'Reilly Media", "9780596007126");
+    @Nested
+    class RepoIntegrationTest {
 
-        bookRepository.deleteAll().block();
-        bookRepository.insert(Arrays.asList(javaBook, dPatternBook)).blockLast();
+        void insertBooks() {
+            Book javaBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-111111111111"), "TEST BOOK 1", "O'Reilly Media", "9780596009205");
+            Book dPatternBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-222222222222"), "TEST BOOK 2", "O'Reilly Media", "9780596007126");
 
-        log.info("Saved books?");
+            bookRepository.insert(Arrays.asList(javaBook, dPatternBook)).blockLast();
 
-        Mono<Long> bookCount = bookRepository.count();
-        bookCount.subscribe(count -> log.info("Book count = " + count));
+            Mono<Long> bookCount = bookRepository.count();
+            bookCount.subscribe(count -> log.info("Book count = " + count));
+        }
 
+        @Test
+        public void testRetrieveBook() throws Exception {
+            insertBooks();
+
+            webTestClient
+                    .get()
+                    .uri("/books/004dcec9-6467-4a59-8c9e-111111111111")
+                    .header(ACCEPT, APPLICATION_JSON_VALUE)
+                    .exchange()
+                    .expectStatus()
+                    .is2xxSuccessful()
+                    .expectBody(Book.class)
+                    .consumeWith(response -> {
+                        log.info(""+ response);
+                    });
+        }
     }
-
-    @Test
-    public void testCreateRetrieveWithMockMVC() throws Exception {
-        insertBooks();
-
-        //this.mockMvc.perform(get("/books/004dcec9-6467-4a59-8c9e-111111111111")).andDo(print()).andExpect(status().isOk());
-        this.webTestClient
-                .get()
-                .uri("/books/004dcec9-6467-4a59-8c9e-111111111111")
-                .header(ACCEPT, APPLICATION_JSON_VALUE)
-                .exchange()
-                .expectStatus()
-                .is2xxSuccessful()
-                .expectBody(Book.class)
-                .consumeWith(book -> {
-                    log.info("Got book: " + book);
-                });;
-
-
-    }
-
 }

@@ -20,18 +20,18 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-//        log.info("Application started with option names : {}", args.getOptionNames());
-//
-//        Book javaBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-111111111111"), "Head First Java", "O'Reilly Media", "9780596009205");
-//        Book dPatternBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-222222222222"), "Head First Design Patterns", "O'Reilly Media", "9780596007126");
-//
-//        bookRepository.deleteAll().block();
-//        bookRepository.insert(Arrays.asList(javaBook, dPatternBook)).blockLast();
-//
-//        log.info("Saved books?");
-//
-//        Mono<Long> bookCount = bookRepository.count();
-//        bookCount.subscribe(count -> log.info("Book count = " + count));
+        log.info("Application started with option names : {}", args.getOptionNames());
+
+        Book javaBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-333333333333"), "Head First Java", "O'Reilly Media", "9780596009205");
+        Book dPatternBook = new Book(UUID.fromString("004dcec9-6467-4a59-8c9e-444444444444"), "Head First Design Patterns", "O'Reilly Media", "9780596007126");
+
+        bookRepository.deleteAll().block();
+        bookRepository.insert(Arrays.asList(javaBook, dPatternBook)).blockLast();
+
+        log.info("Saved books?");
+
+        Mono<Long> bookCount = bookRepository.count();
+        bookCount.subscribe(count -> log.info("Book count = " + count));
 
     }
 }
