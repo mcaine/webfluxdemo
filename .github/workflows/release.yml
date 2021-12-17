@@ -47,11 +47,6 @@ jobs:
       - name: Get maven version
         run: echo "MVN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')" >> $GITHUB_ENV
 
-      - name: show github env
-        run: |
-          echo "env file is $GITHUB_ENV"
-          cat $GITHUB_ENV
-
       - name: Perform release
         run: mvn --batch-mode -DskipTests clean release:perform
         env:
