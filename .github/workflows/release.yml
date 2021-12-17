@@ -44,6 +44,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get maven version
+        run:  |
+          MVN_PROJECT_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+          echo MAVEN PROJECT VERSION is ${{MAVEN_PROJECT_VERSION}}
+
       - name: Perform release
         run: mvn --batch-mode test release:perform
         env:
@@ -51,7 +56,7 @@ jobs:
 
       - name: Push
         run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:latest
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:${{MAVEN_PROJECT_VERSION}}
 
 
 
