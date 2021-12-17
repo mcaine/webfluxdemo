@@ -34,21 +34,21 @@ jobs:
           server-id: github
           cache: maven
 
+      - name: Get maven version
+        run: echo "MVN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')" >> $GITHUB_ENV
+
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
       - name: Prepare release
-        run: mvn --batch-mode -DskipTests clean release:prepare
+        run: mvn --batch-mode clean release:prepare -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get maven version
-        run: echo "MVN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')" >> $GITHUB_ENV
-
       - name: Perform release
-        run: mvn --batch-mode -DskipTests clean release:perform
+        run: mvn --batch-mode clean release:perform -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
