@@ -47,7 +47,7 @@ jobs:
       - name: Get maven version
         run:  |
           MVN_PROJECT_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
-          echo MAVEN PROJECT VERSION is ${{MAVEN_PROJECT_VERSION}}
+          echo MAVEN PROJECT VERSION is ${MAVEN_PROJECT_VERSION}
 
       - name: Perform release
         run: mvn --batch-mode test release:perform
@@ -56,7 +56,7 @@ jobs:
 
       - name: Push
         run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:${{MAVEN_PROJECT_VERSION}}
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:${MAVEN_PROJECT_VERSION}
 
 
 
