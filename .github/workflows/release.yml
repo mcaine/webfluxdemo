@@ -40,12 +40,12 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Prepare release
-        run: mvn --batch-mode test release:prepare
+        run: mvn --batch-mode -DskipTests clean release:prepare
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get maven version
-        run: echo "MVN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        run: echo "MVN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')" >> $GITHUB_ENV
 
       - name: show github env
         run: |
@@ -53,7 +53,7 @@ jobs:
           cat $GITHUB_ENV
 
       - name: Perform release
-        run: mvn --batch-mode test release:perform
+        run: mvn --batch-mode -DskipTests clean release:perform
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
