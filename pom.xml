@@ -10,7 +10,7 @@
 
 	<groupId>com.mikeycaine</groupId>
 	<artifactId>webfluxdemo</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<name>webfluxdemo</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -23,7 +23,7 @@
         <connection>scm:git:https://github.com/mcaine/webfluxdemo.git</connection>
         <developerConnection>scm:git:https://github.com/mcaine/webfluxdemo.git</developerConnection>
         <url>https://github.com/mcaine/webfluxdemo.git</url>
-        <tag>v0.0.5</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencyManagement>
