@@ -43,12 +43,12 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Prepare release
-        run: mvn --batch-mode clean release:prepare -DskipTests
+        run: mvn --batch-mode release:prepare
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Perform release
-        run: mvn --batch-mode clean release:perform -DskipTests
+        run: mvn --batch-mode -DskipTests release:perform
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
