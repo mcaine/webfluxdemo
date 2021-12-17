@@ -59,7 +59,7 @@ jobs:
 
       - name: Push
         run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:${{MVN_PROJECT_VERSION}}
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/webfluxdemo:$MVN_PROJECT_VERSION
 
 
 
