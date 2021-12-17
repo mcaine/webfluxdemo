@@ -18,13 +18,23 @@ jobs:
         with:
           java-version: '15'
           distribution: 'adopt'
+          server-id: github
           cache: maven
+
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
 
       - name: Prepare release
         run: mvn --batch-mode test release:prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Perform release
         run: mvn --batch-mode test release:perform
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
