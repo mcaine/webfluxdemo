@@ -43,7 +43,7 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Prepare release
-        run: mvn --batch-mode -DpreparationGoals=clean release:prepare
+        run: mvn --batch-mode release:prepare
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
