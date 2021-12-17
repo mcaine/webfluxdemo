@@ -1,1 +1,1 @@
-![mvn test](https://github.com/mcaine/webfluxdemo/actions/workflows/ci.yml/badge.svg)
+![mvn test](https://github.com/mcaine/webfluxdemo/actions/workflows/ci.yml/badge.svg?branch=master&kill_cache=1)
