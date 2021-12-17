@@ -49,7 +49,7 @@ jobs:
 
       - name: show github env
         run: |
-          echo "env file is ${{GITHUB_ENV}}
+          echo "env file is ${{GITHUB_ENV}}"
           cat ${{GITHUB_ENV}}
 
       - name: Perform release
