@@ -10,7 +10,7 @@
 
 	<groupId>com.mikeycaine</groupId>
 	<artifactId>webfluxdemo</artifactId>
-	<version>0.0.13-SNAPSHOT</version>
+	<version>0.0.14-SNAPSHOT</version>
 	<name>webfluxdemo</name>
 	<description>Demo project for Spring Boot</description>
 
